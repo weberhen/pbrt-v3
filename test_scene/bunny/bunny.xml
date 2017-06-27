@@ -1,0 +1,35 @@
+<scene version="0.5.0">
+    <integrator type="multichannel">
+        <integrator type="path"/>
+        <integrator type="field">
+            <string name="field" value="shNormal"/>
+        </integrator>
+        <integrator type="field">
+            <string name="field" value="distance"/>
+        </integrator>
+    </integrator>
+
+    <sensor type="perspective">
+        <transform name="toWorld">
+            <lookat origin=".5, 0, .4" target="0,0,0" up="0,0,1" />
+        </transform>
+        <float name="fov" value="40"/>
+        <sampler type="independent">
+            <integer name="sampleCount" value="32"/>
+        </sampler>
+        <film type="hdrfilm">
+            <integer name="width" value="200"/>
+            <integer name="height" value="200"/>
+            <string name="pixelFormat" value="rgb, rgb, luminance"/>
+            <string name="channelNames" value="color, normal, distance"/>
+        </film>
+    </sensor>
+
+    <shape type="ply">
+        <string name="filename" value="geometry/bunny.ply"/>
+        <transform name="toWorld">
+            <translate x="0" y="-.033" z="0"/>
+            <scale x="1" y="-1" z="1"/>
+        </transform>
+    </shape>
+</scene>

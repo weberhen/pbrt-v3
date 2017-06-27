@@ -1,0 +1,29 @@
+LookAt .5 0 .4   0 0 0 0 0 1
+Camera "perspective" "float fov" [40]
+PixelFilter "mitchell" "float xwidth" [2] "float ywidth" [2]
+
+Sampler "sobol" "integer pixelsamples" [4]
+Integrator "volpath" "integer maxdepth" [25]
+
+Film "image" "string filename" ["green-acrylic-bunny.png"]
+     #"integer xresolution" [200] "integer yresolution" [200]
+
+
+WorldBegin
+AttributeBegin
+  CoordSysTransform "camera"
+  LightSource "distant"
+              "point from" [0 0 0] "point to"   [0 0 1]
+              "rgb L"    [5 5 5]
+AttributeEnd
+
+MakeNamedMaterial "measured_bsdf"
+    "string type" "fourier" "string bsdffile" "bsdfs/green-acrylic.bsdf"
+
+AttributeBegin
+  Translate 0 -.033 0
+  #Material "matte" "color Kd" [.7 .1 .1]
+  NamedMaterial "measured_bsdf"
+  Shape "plymesh" "string filename" "geometry/bunny.ply" 
+AttributeEnd
+WorldEnd
