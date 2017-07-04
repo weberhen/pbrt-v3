@@ -12,6 +12,7 @@
 #include "paramset.h"
 #include "tools/json.hpp"
 #include <fstream>
+#include <stdlib.h>     /* atof */
 
 using json = nlohmann::json;
 

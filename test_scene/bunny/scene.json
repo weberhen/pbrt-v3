@@ -1,29 +1,23 @@
 {
   "camera": "environment",
-  "nScenes": 3,
-  "xresolution": 200,
-  "yresolution": 100,
+  "nScenes": 1,
+  "xresolution": 128,
+  "yresolution": 64,
+  "vpls":
+    "/home/INO.CA/user9846/Documents/hdr_indoor/output-03-10/9C4A9784/9C4A9784_Panorama_hdr_inpainted/data_vpls.txt",
+  "bsdf": 
+    "../test_scene/bunny/bsdfs/green-acrylic.bsdf",
   "objectPose": [
     [1, 0, 0, 0, 0, 0],
     [1, 0, 0, 0, 0, 0],
     [1, 0, 0, 0, 0, 0]
   ],
   "cameraLookat": [
-    [0.5, 0, 0, 0, 0, 0, 1, 1, 0],
-    [0.5, 0, 0, 0, 0, 0, 1, 1, 0],
-    [0.5, 0, 0, 0, 0, 0, 1, 1, 0]
+    [0, 1, 0, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 1, 0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 0, 0, 0, 1, 0]
   ],
-  "fov": [45, 47, 30],
-  "bsdf": [
-    "../test_scene/bunny/bsdfs/green-acrylic.bsdf",
-    "../test_scene/bunny/bsdfs/green-acrylic.bsdf",
-    "../test_scene/bunny/bsdfs/green-acrylic.bsdf"],
-  "envmap": [
-    "../test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr",
-    "../test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr",
-    "../test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr"],
-  "mesh": [
-    "../test_scene/bunny/geometry/bunny.ply",
-    "../test_scene/bunny/geometry/bunny.ply",
-    "../test_scene/bunny/geometry/bunny.ply"]
+  "fov": [90, 
+          47, 
+          30]
 }

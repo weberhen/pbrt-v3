@@ -150,7 +150,18 @@ int main(int argc, char *argv[]) {
     pbrtInit(options);
     // Process scene description
 
-    MakeScene(filenames[0]);
+    if (filenames.empty()) {
+        // Parse scene from standard input
+        ParseFile("-");
+    } else if(filenames[0].substr(filenames[0].find_last_of(".") + 1) == "pbrt") {
+        // Parse scene from input files
+        for (const std::string &f : filenames)
+            if (!ParseFile(f))
+                Error("Couldn't open scene file \"%s\"", f.c_str());
+    }
+    else if(filenames[0].substr(filenames[0].find_last_of(".") + 1) == "json") {
+      MakeScene(filenames[0]);
+    }
 
     pbrtCleanup();
     return 0;

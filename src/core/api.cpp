@@ -697,11 +697,9 @@ Camera *MakeCamera(const std::string &name, const ParamSet &paramSet,
     transformCache.Lookup(cam2worldSet[1], &cam2world[1], nullptr);
     AnimatedTransform animatedCam2World(cam2world[0], transformStart,
                                         cam2world[1], transformEnd);
-    if (name == "perspective"){
-        std::cout<<"HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"<<std::endl;
+    if (name == "perspective")
         camera = CreatePerspectiveCamera(paramSet, animatedCam2World, film,
                                          mediumInterface.outside);
-    }
     else if (name == "orthographic")
         camera = CreateOrthographicCamera(paramSet, animatedCam2World, film,
                                           mediumInterface.outside);
@@ -997,8 +995,6 @@ void pbrtIntegrator(const std::string &name, const ParamSet &params) {
 void pbrtCamera(const std::string &name, const ParamSet &params) {
     VERIFY_OPTIONS("Camera");
     renderOptions->CameraName = name;
-    Float fov = params.FindOneFloat("fov", 9.);
-    std::cout<<"######## fov: "<<fov<<std::endl;
     renderOptions->CameraParams = params;
     renderOptions->CameraToWorld = Inverse(curTransform);
     namedCoordinateSystems["camera"] = renderOptions->CameraToWorld;
@@ -1185,6 +1181,7 @@ void pbrtNamedMaterial(const std::string &name) {
 }
 
 void pbrtLightSource(const std::string &name, const ParamSet &params) {
+    std::cout<<name<<std::endl;
     VERIFY_WORLD("LightSource");
     WARN_IF_ANIMATED_TRANSFORM("LightSource");
     MediumInterface mi = graphicsState.CreateMediumInterface();
