@@ -35,6 +35,7 @@
 #include "pbrt.h"
 #include "api.h"
 #include "parser.h"
+#include "makescene.h"
 #include "parallel.h"
 #include <glog/logging.h>
 
@@ -148,7 +149,10 @@ int main(int argc, char *argv[]) {
     }
     pbrtInit(options);
     // Process scene description
-    if (filenames.empty()) {
+
+    MakeScene();
+
+    /*if (filenames.empty()) {
         // Parse scene from standard input
         ParseFile("-");
     } else {
@@ -156,7 +160,7 @@ int main(int argc, char *argv[]) {
         for (const std::string &f : filenames)
             if (!ParseFile(f))
                 Error("Couldn't open scene file \"%s\"", f.c_str());
-    }
+    }*/
     pbrtCleanup();
     return 0;
 }

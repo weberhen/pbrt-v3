@@ -588,7 +588,7 @@ std::shared_ptr<Medium> MakeMedium(const std::string &name,
     return std::shared_ptr<Medium>(m);
 }
 
-std::shared_ptr<Light> MakeLight(const std::string &name,
+/*std::shared_ptr<Light> MakeLight(const std::string &name,
                                  const ParamSet &paramSet,
                                  const Transform &light2world,
                                  const MediumInterface &mediumInterface) {
@@ -608,6 +608,47 @@ std::shared_ptr<Light> MakeLight(const std::string &name,
         light = CreateDistantLight(light2world, paramSet);
     else if (name == "infinite" || name == "exinfinite")
         light = CreateInfiniteLight(light2world, paramSet);
+    else
+        Warning("Light \"%s\" unknown.", name.c_str());
+    paramSet.ReportUnused();
+    return light;
+}*/
+
+std::shared_ptr<Light> light;
+bool lightNotDefined=true;
+std::shared_ptr<Light> MakeLight(const std::string &name,
+                                 const ParamSet &paramSet,
+                                 const Transform &light2world,
+                                 const MediumInterface &mediumInterface) {
+    
+    if (name == "point")
+        light =
+            CreatePointLight(light2world, mediumInterface.outside, paramSet);
+    else if (name == "spot")
+        light = CreateSpotLight(light2world, mediumInterface.outside, paramSet);
+    else if (name == "goniometric")
+        light = CreateGoniometricLight(light2world, mediumInterface.outside,
+                                       paramSet);
+    else if (name == "projection")
+        light = CreateProjectionLight(light2world, mediumInterface.outside,
+                                      paramSet);
+    else if (name == "distant")
+        light = CreateDistantLight(light2world, paramSet);
+    else if (name == "infinite" || name == "exinfinite")
+    {
+        if(lightNotDefined)
+        {
+            light = CreateInfiniteLight(light2world, paramSet);
+            lightNotDefined=false;
+        }
+        else
+        {
+            std::string texmap = paramSet.FindOneFilename("mapname", "");
+            std::cout<<"light already created"<<std::endl;
+        }
+
+        
+    }
     else
         Warning("Light \"%s\" unknown.", name.c_str());
     paramSet.ReportUnused();
@@ -656,9 +697,11 @@ Camera *MakeCamera(const std::string &name, const ParamSet &paramSet,
     transformCache.Lookup(cam2worldSet[1], &cam2world[1], nullptr);
     AnimatedTransform animatedCam2World(cam2world[0], transformStart,
                                         cam2world[1], transformEnd);
-    if (name == "perspective")
+    if (name == "perspective"){
+        std::cout<<"HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE"<<std::endl;
         camera = CreatePerspectiveCamera(paramSet, animatedCam2World, film,
                                          mediumInterface.outside);
+    }
     else if (name == "orthographic")
         camera = CreateOrthographicCamera(paramSet, animatedCam2World, film,
                                           mediumInterface.outside);
@@ -834,6 +877,22 @@ void pbrtLookAt(Float ex, Float ey, Float ez, Float lx, Float ly, Float lz,
             catIndentCount + 8, "", ux, uy, uz);
 }
 
+void pbrtLookAt(std::vector< Float> _lookAt) {
+    VERIFY_INITIALIZED("LookAt");
+    Transform lookAt =
+        LookAt(Point3f(_lookAt[0], _lookAt[1], _lookAt[2]), 
+               Point3f(_lookAt[3], _lookAt[4], _lookAt[5]), 
+               Vector3f(_lookAt[6], _lookAt[7], _lookAt[8]));
+    FOR_ACTIVE_TRANSFORMS(curTransform[i] = curTransform[i] * lookAt;);
+    if (PbrtOptions.cat || PbrtOptions.toPly)
+        printf(
+            "%*sLookAt %.9g %.9g %.9g\n%*s%.9g %.9g %.9g\n"
+            "%*s%.9g %.9g %.9g\n",
+            catIndentCount, "", _lookAt[0], _lookAt[1], _lookAt[2], 
+            catIndentCount + 8, "", _lookAt[3], _lookAt[4], _lookAt[5],
+            catIndentCount + 8, "", _lookAt[6], _lookAt[7], _lookAt[8]);
+}
+
 void pbrtCoordinateSystem(const std::string &name) {
     VERIFY_INITIALIZED("CoordinateSystem");
     namedCoordinateSystems[name] = curTransform;
@@ -938,6 +997,8 @@ void pbrtIntegrator(const std::string &name, const ParamSet &params) {
 void pbrtCamera(const std::string &name, const ParamSet &params) {
     VERIFY_OPTIONS("Camera");
     renderOptions->CameraName = name;
+    Float fov = params.FindOneFloat("fov", 9.);
+    std::cout<<"######## fov: "<<fov<<std::endl;
     renderOptions->CameraParams = params;
     renderOptions->CameraToWorld = Inverse(curTransform);
     namedCoordinateSystems["camera"] = renderOptions->CameraToWorld;

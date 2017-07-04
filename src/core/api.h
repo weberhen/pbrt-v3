@@ -52,6 +52,7 @@ void pbrtRotate(Float angle, Float ax, Float ay, Float az);
 void pbrtScale(Float sx, Float sy, Float sz);
 void pbrtLookAt(Float ex, Float ey, Float ez, Float lx, Float ly, Float lz,
                 Float ux, Float uy, Float uz);
+void pbrtLookAt(std::vector< Float> lookAt);
 void pbrtConcatTransform(Float transform[16]);
 void pbrtTransform(Float transform[16]);
 void pbrtCoordinateSystem(const std::string &);

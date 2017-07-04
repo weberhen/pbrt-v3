@@ -1,12 +1,12 @@
-LookAt .5 0 .4   0 0 0 0 0 1
-Camera "perspective" "float fov" [40]
-PixelFilter "mitchell" "float xwidth" [2] "float ywidth" [2]
+#LookAt .5 0 .4   0 0 0 0 0 1
+#Camera "perspective" "float fov" [40]
+#PixelFilter "mitchell" "float xwidth" [2] "float ywidth" [2]
 
 Sampler "sobol" "integer pixelsamples" [4]
 Integrator "volpath" "integer maxdepth" [25]
 
 Film "image" "string filename" ["green-acrylic-bunny.png"]
-     #"integer xresolution" [200] "integer yresolution" [200]
+     "integer xresolution" [200] "integer yresolution" [200]
 
 
 WorldBegin
