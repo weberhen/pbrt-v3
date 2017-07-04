@@ -3,6 +3,7 @@
 namespace ns {
     // a simple struct to model a person
     struct scene {
+        std::string camera;
         std::vector<std::vector< pbrt::Float> > objectPose;
         std::vector<std::vector<float> > cameraLookat;
         std::vector<float> fov;   
@@ -14,6 +15,7 @@ namespace ns {
     };
 
     void from_json(const json& j, scene& s) {
+        s.camera = j.at("camera").get<std::string>();
         s.objectPose = j.at("objectPose").get<std::vector< std::vector<float> > >();
         s.cameraLookat = j.at("cameraLookat").get<std::vector< std::vector<float> > >();        
         s.fov = j.at("fov").get<std::vector<float> >();
@@ -68,9 +70,9 @@ static const char *paramTypeToName(int type);
 static bool lookupType(const char *name, int *type, std::string &sname);
 static void InitParamSet(ParamSet &ps, SpectrumType);
 
-void MakeScene()
+void MakeScene(std::string filename)
 {
-    std::ifstream i("../test_scene/bunny/scene.json");
+    std::ifstream i(filename);
     json j;
     i >> j;
     ns::scene s = j;
@@ -90,7 +92,7 @@ void MakeScene()
         fov[0] = s.fov[0];
         params.AddFloat("fov",std::move(fov),1);
         
-        pbrt::pbrtCamera("environment", params);
+        pbrt::pbrtCamera(s.camera, params);
 
         //Sampler "sobol" "integer pixelsamples" [4]
         pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);

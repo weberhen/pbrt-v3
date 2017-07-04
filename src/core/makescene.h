@@ -17,7 +17,7 @@ using json = nlohmann::json;
 
 namespace pbrt {
 
-void MakeScene(void);
+void MakeScene(std::string filename);
 
 }  // namespace pbrt
 

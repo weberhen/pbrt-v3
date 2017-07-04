@@ -1,4 +1,5 @@
 {
+  "camera": "environment",
   "nScenes": 3,
   "xresolution": 200,
   "yresolution": 100,
@@ -14,15 +15,15 @@
   ],
   "fov": [45, 47, 30],
   "bsdf": [
-    "/home/jack/Documents/_codes/pbrt-v3/test_scene/bunny/bsdfs/green-acrylic.bsdf",
-    "/home/jack/Documents/_codes/pbrt-v3/test_scene/bunny/bsdfs/green-acrylic.bsdf",
-    "/home/jack/Documents/_codes/pbrt-v3/test_scene/bunny/bsdfs/green-acrylic.bsdf"],
+    "../test_scene/bunny/bsdfs/green-acrylic.bsdf",
+    "../test_scene/bunny/bsdfs/green-acrylic.bsdf",
+    "../test_scene/bunny/bsdfs/green-acrylic.bsdf"],
   "envmap": [
-    "/home/jack/Documents/_codes/pbrt-v3/test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr",
-    "/home/jack/Documents/_codes/pbrt-v3/test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr",
-    "/home/jack/Documents/_codes/pbrt-v3/test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr"],
+    "../test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr",
+    "../test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr",
+    "../test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr"],
   "mesh": [
-    "/home/jack/Documents/_codes/pbrt-v3/test_scene/bunny/geometry/bunny.ply",
-    "/home/jack/Documents/_codes/pbrt-v3/test_scene/bunny/geometry/bunny.ply",
-    "/home/jack/Documents/_codes/pbrt-v3/test_scene/bunny/geometry/bunny.ply"]
+    "../test_scene/bunny/geometry/bunny.ply",
+    "../test_scene/bunny/geometry/bunny.ply",
+    "../test_scene/bunny/geometry/bunny.ply"]
 }

@@ -1,3 +1,44 @@
+multi-pbrt
+==========
+
+Render multiple scenes using pbrt without loading resources at each new scene.
+The input file is a json file in the following format:
+
+{
+  "camera": "environment",
+  "nScenes": 3,
+  "xresolution": 200,
+  "yresolution": 100,
+  "objectPose": [
+    [1, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0],
+    [1, 0, 0, 0, 0, 0]
+  ],
+  "cameraLookat": [
+    [0.5, 0, 0, 0, 0, 0, 1, 1, 0],
+    [0.5, 0, 0, 0, 0, 0, 1, 1, 0],
+    [0.5, 0, 0, 0, 0, 0, 1, 1, 0]
+  ],
+  "fov": [45, 47, 30],
+  "bsdf": [
+    "../test_scene/bunny/bsdfs/green-acrylic.bsdf",
+    "../test_scene/bunny/bsdfs/green-acrylic.bsdf",
+    "../test_scene/bunny/bsdfs/green-acrylic.bsdf"],
+  "envmap": [
+    "../test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr",
+    "../test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr",
+    "../test_scene/bunny/envmaps/no_hole_9C4A0307_Panorama_hdr.exr"],
+  "mesh": [
+    "../test_scene/bunny/geometry/bunny.ply",
+    "../test_scene/bunny/geometry/bunny.ply",
+    "../test_scene/bunny/geometry/bunny.ply"]
+}
+
+Resources that are loaded only once:
+------------------------------------
+
+* environment map
+
 pbrt, Version 3
 ===============
 

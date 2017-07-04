@@ -150,17 +150,8 @@ int main(int argc, char *argv[]) {
     pbrtInit(options);
     // Process scene description
 
-    MakeScene();
+    MakeScene(filenames[0]);
 
-    /*if (filenames.empty()) {
-        // Parse scene from standard input
-        ParseFile("-");
-    } else {
-        // Parse scene from input files
-        for (const std::string &f : filenames)
-            if (!ParseFile(f))
-                Error("Couldn't open scene file \"%s\"", f.c_str());
-    }*/
     pbrtCleanup();
     return 0;
 }
