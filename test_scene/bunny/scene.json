@@ -1,21 +1,21 @@
 {
   "camera": "environment",
   "nScenes": 1,
-  "xresolution": 128,
-  "yresolution": 64,
+  "xresolution": 512,
+  "yresolution": 256,
   "vpls":
-    "/home/INO.CA/user9846/Documents/hdr_indoor/output-03-10/9C4A9784/9C4A9784_Panorama_hdr_inpainted/data_vpls.txt",
+    "../test_scene/bunny/vpls/data_vpls.txt",
   "bsdf": 
     "../test_scene/bunny/bsdfs/green-acrylic.bsdf",
+  "mesh":
+    "../test_scene/bunny/geometry/bunny.ply",
+  "envmap_mesh":
+    "../test_scene/bunny/envmaps/depth_9C4A0307.ply",
   "objectPose": [
-    [1, 0, 0, 0, 0, 0],
-    [1, 0, 0, 0, 0, 0],
     [1, 0, 0, 0, 0, 0]
   ],
   "cameraLookat": [
-    [0, 1, 0, 0, 0, 0, 0, 0, 1],
-    [0, 0, 0, 1, 0, 0, 0, 1, 0],
-    [0, 0, 0, 1, 0, 0, 0, 1, 0]
+    [0, 1.2, 0, 9.3, 1.2, 0.17, 0, 1, 0]
   ],
   "fov": [90, 
           47, 

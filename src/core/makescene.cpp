@@ -11,6 +11,7 @@ namespace ns {
         std::string envmap;
         std::string mesh;
         std::string vpls;
+        std::string envmap_mesh;
         int xresolution;
         int yresolution;
     };
@@ -28,6 +29,8 @@ namespace ns {
             s.bsdf = j.at("bsdf").get<std::string >();
         if(j.find("envmap") != j.end())
             s.envmap = j.at("envmap").get<std::string >();
+        if(j.find("envmap_mesh") != j.end())
+            s.envmap_mesh = j.at("envmap_mesh").get<std::string >();
         if(j.find("mesh") != j.end())
             s.mesh = j.at("mesh").get<std::string >();
         if(j.find("vpls") != j.end())
@@ -114,19 +117,35 @@ void MakeScene(std::string filename)
         
         pbrt::pbrtCamera(s.camera, params);
 
-        //Sampler "sobol" "integer pixelsamples" [4]
         pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
         std::unique_ptr<int[]> pixelsamples(new int[1]);
-        pixelsamples[0] = 1;
+        pixelsamples[0] = 30000;
         params.AddInt("pixelsamples",std::move(pixelsamples),1);
-        pbrt::pbrtSampler("sobol", params);
+        pbrt::pbrtSampler("halton", params);
+
+/*       	pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
+        std::unique_ptr<Float[]> xwidth(new Float[1]);
+        xwidth[0] = 100;
+        params.AddFloat("xwidth",std::move(xwidth),1);
+        std::unique_ptr<Float[]> ywidth(new Float[1]);
+        ywidth[0] = 10;
+        params.AddFloat("ywidth",std::move(ywidth),1);
+        pbrt::pbrtPixelFilter("gaussian",params); */
+        //PixelFilter "mitchell" "float xwidth" [2] "float ywidth" [2]
+
+        //Sampler "sobol" "integer pixelsamples" [4]
+
+        
 
         //Integrator "volpath" "integer maxdepth" [25]
         pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
         std::unique_ptr<int[]> maxdepth(new int[1]);
         maxdepth[0] = 1;
         params.AddInt("maxdepth",std::move(maxdepth),1);
-        pbrt::pbrtIntegrator("path", params);
+        std::unique_ptr<int[]> iterations(new int[1]);
+        iterations[0] = 1;
+        params.AddInt("iterations",std::move(iterations),1);
+        pbrt::pbrtIntegrator("sppm", params);
 
         //Film "image" "string filename" ["green-acrylic-bunny.png"]
         pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
@@ -176,6 +195,8 @@ void MakeScene(std::string filename)
             std::istringstream iss;
             std::string substring;
 
+            //pbrt::pbrtRotate(90,1,0,0);
+
             if (vpls_data.is_open()) 
             {
                 std::getline (vpls_data,line); //skips first line of data_vpls.txt
@@ -184,7 +205,7 @@ void MakeScene(std::string filename)
                 iss.str(line);
                 iss >> substring; iss >> substring; 
                 int step = 1;
-                NVPLS = std::stoi(substring)/step;
+                NVPLS = 10;//std::stoi(substring)/step;
 
 /*                for(int v=0;v<2294272;v++)
                         std::getline (vpls_data,line);
@@ -271,7 +292,7 @@ void MakeScene(std::string filename)
                 pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
                 //Shape "sphere" "float radius" [1]                
                 std::unique_ptr<Float[]> radius(new Float[1]);
-                radius[0] = .002;
+                radius[0] = .02;
                 params.AddFloat("radius",std::move(radius),1);
                 pbrt::pbrtShape("sphere", params);
                 pbrt::pbrtTransformEnd();
@@ -279,10 +300,28 @@ void MakeScene(std::string filename)
                 //AttributeEnd
                 pbrt::pbrtAttributeEnd();
             }
-        }      
+        }
+
+        //AttributeBegin
+        pbrt::pbrtAttributeBegin();
+
+        //  Shape "plymesh" "string filename" "geometry/bunny.ply" 
+        pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
+        std::unique_ptr<std::string[]> mesh_filename(new std::string[1]);
+        mesh_filename[0] = s.envmap_mesh;
+        pbrt::pbrtRotate(90,-1,0,0);
+        pbrt::pbrtMaterial("plastic", params);
+        params.AddString("filename",std::move(mesh_filename),1);    
+        pbrt::pbrtShape("plymesh", params);
+
+        //AttributeEnd
+		pbrt::pbrtAttributeEnd();
         
         if(!s.mesh.empty()){
 
+            //AttributeBegin
+            pbrt::pbrtAttributeBegin();
+            
             //    "string type" "fourier" "string bsdffile" "bsdfs/green-acrylic.bsdf"
             pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
             std::unique_ptr<std::string[]> type(new std::string[1]);
@@ -293,9 +332,6 @@ void MakeScene(std::string filename)
             params.AddString("bsdffile",std::move(bsdffile),1);
             //MakeNamedMaterial "measured_bsdf"
             pbrt::pbrtMakeNamedMaterial("measured_bsdf", params);
-         
-            //AttributeBegin
-            pbrt::pbrtAttributeBegin();
             
             //  Translate 0 -.033 0
             pbrt::pbrtTranslate(s.objectPose[ix][0],s.objectPose[ix][1],s.objectPose[ix][2]);

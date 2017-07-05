@@ -2,7 +2,7 @@ LookAt 0 0 0 0 1 0 0 0 1
 Camera "perspective" "float fov" [90]
 PixelFilter "mitchell" "float xwidth" [2] "float ywidth" [2]
 
-Sampler "sobol" "integer pixelsamples" [4]
+Sampler "sobol" "integer pixelsamples" [8]
 Integrator "volpath" "integer maxdepth" [25]
 
 Film "image" "string filename" ["green-acrylic-bunny.png"]
