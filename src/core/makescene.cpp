@@ -119,18 +119,18 @@ void MakeScene(std::string filename)
 
         pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
         std::unique_ptr<int[]> pixelsamples(new int[1]);
-        pixelsamples[0] = 30000;
+        pixelsamples[0] = 32;
         params.AddInt("pixelsamples",std::move(pixelsamples),1);
         pbrt::pbrtSampler("halton", params);
 
-/*       	pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
+       	/*pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
         std::unique_ptr<Float[]> xwidth(new Float[1]);
-        xwidth[0] = 100;
+        xwidth[0] = 2;
         params.AddFloat("xwidth",std::move(xwidth),1);
         std::unique_ptr<Float[]> ywidth(new Float[1]);
-        ywidth[0] = 10;
+        ywidth[0] = 2;
         params.AddFloat("ywidth",std::move(ywidth),1);
-        pbrt::pbrtPixelFilter("gaussian",params); */
+        pbrt::pbrtPixelFilter("triangle",params); */
         //PixelFilter "mitchell" "float xwidth" [2] "float ywidth" [2]
 
         //Sampler "sobol" "integer pixelsamples" [4]
@@ -145,6 +145,12 @@ void MakeScene(std::string filename)
         std::unique_ptr<int[]> iterations(new int[1]);
         iterations[0] = 1;
         params.AddInt("iterations",std::move(iterations),1);
+        std::unique_ptr<std::string[]> lightsamplestrategy(new std::string[1]);
+        lightsamplestrategy[0] = "uniform";
+        params.AddString("lightsamplestrategy",std::move(lightsamplestrategy),1);
+        std::unique_ptr<Float[]> rrthreshold(new Float[1]);
+        rrthreshold[0] = 1;
+        params.AddFloat("rrthreshold",std::move(rrthreshold),1);
         pbrt::pbrtIntegrator("sppm", params);
 
         //Film "image" "string filename" ["green-acrylic-bunny.png"]
@@ -205,7 +211,7 @@ void MakeScene(std::string filename)
                 iss.str(line);
                 iss >> substring; iss >> substring; 
                 int step = 1;
-                NVPLS = 10;//std::stoi(substring)/step;
+                NVPLS = std::stoi(substring)/step;
 
 /*                for(int v=0;v<2294272;v++)
                         std::getline (vpls_data,line);
@@ -292,7 +298,7 @@ void MakeScene(std::string filename)
                 pbrt::InitParamSet(params, pbrt::SpectrumType::Reflectance);
                 //Shape "sphere" "float radius" [1]                
                 std::unique_ptr<Float[]> radius(new Float[1]);
-                radius[0] = .02;
+                radius[0] = .3;
                 params.AddFloat("radius",std::move(radius),1);
                 pbrt::pbrtShape("sphere", params);
                 pbrt::pbrtTransformEnd();

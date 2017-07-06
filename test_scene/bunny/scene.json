@@ -1,8 +1,8 @@
 {
   "camera": "environment",
   "nScenes": 1,
-  "xresolution": 512,
-  "yresolution": 256,
+  "xresolution": 128,
+  "yresolution": 64,
   "vpls":
     "../test_scene/bunny/vpls/data_vpls.txt",
   "bsdf": 
